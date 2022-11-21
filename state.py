@@ -2,33 +2,34 @@ from typing import List
 import numpy as np
 
 
-class RushHour():
+class BoardState():
     def __init__(self, board: List[List[str]], fuel: dict) -> None:
         self.board = board
         self.fuel = fuel
 
-    def search(self) -> dict:
-        possible_moves = {}
+    def get_children(self) -> dict:
+        # possible_moves = {}
 
         # Scan board vertically, then horizontally - break every line 
-        for i in range(6):
-            empty_counter = 0
-            for j in range(6):
-                if self.board[i][j] == '.':
-                    empty_counter += 1
+        # for i in range(6):
+        #     empty_counter = 0
+        #     for j in range(6):
+        #         if self.board[i][j] == '.':
+        #             empty_counter += 1
                 
         # Keep track of any vehicle (AKA any letter that repeats more than once) --> Vehicle must have dots on either side to move
         # Keep track in dictionary where key is vehicle and array of int are possible moves(?)
         pass
 
-    def move_vertical(self, vehicle: str, dist: int) -> None:
-        pass
+    # def move_vertical(self, vehicle: str, dist: int) -> None:
+    #     pass
 
-    def move_horizontal(self, vehicle: str, dist: int) -> None:
-        pass
+    # def move_horizontal(self, vehicle: str, dist: int) -> None:
+    #     pass
+    #     # Let end vehicle exit if possible?
 
-    def exit_vehicle(self) -> None:
-        pass
+    # def exit_vehicle(self) -> None:
+    #     pass
 
     def has_fuel(self, vehicle: str) -> bool:
         return self.fuel[vehicle] > 0

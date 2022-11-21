@@ -2,7 +2,7 @@ import numpy as np
 import re
 from typing import List
 
-from rushhour import RushHour
+from state import RushHour
 
 # Parse board into 2D array
 def parse_board(input: str) -> List[List[str]]:
