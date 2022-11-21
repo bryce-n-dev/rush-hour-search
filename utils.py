@@ -4,7 +4,7 @@ from typing import List
 
 from rushhour import RushHour
 
-
+# Parse board into 2D array
 def parse_board(input: str) -> List[List[str]]:
     input = input[:36]
     board = np.array(list(input))
@@ -23,6 +23,7 @@ def parse_fuel(input: str) -> dict:
         fuel_dict[car[0]] = int(car[1:]) # Overwrite default with specified value
     return fuel_dict
 
+# Returns list of rush hour game objects
 def init_boards(file_name: str) -> List[RushHour]:
     rush_hour_games = []
     with open(file_name, 'r') as filehandle:
