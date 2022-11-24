@@ -37,6 +37,7 @@ class BoardState():
     def is_solved(self) -> bool:
         return (self.board[2][4] == 'A' and self.board[2][5] == 'A')
 
+    #state of board (2D)
     def print_board(self) -> None:
         for row in self.board:
             for col in row:
@@ -48,7 +49,22 @@ class BoardState():
         board_string = ''.join(str(x) for x in flat_board) 
         print(board_string)
 
+    #fuel of all cars
     def print_fuel(self) -> None:
         print('Car fuel available: ', end=' ')
         for car in self.fuel:
             print(f'{car}: {self.fuel[car]}', end='  ')
+
+    def is_horizontal(self, vehicle:str) -> bool:
+        temp1 = ""
+        temp2 = ""
+        
+        for row in self.board:
+            for col in range(0, 4):
+                temp1 = row[col]
+                temp2 = row[col+1]
+                if(temp1 == temp2 and temp1 == vehicle):
+                    return True
+        return False
+            
+                

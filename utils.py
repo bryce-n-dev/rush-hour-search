@@ -2,7 +2,7 @@ import numpy as np
 import re
 from typing import List
 
-from state import RushHour
+from state import BoardState
 
 # Parse board into 2D array
 def parse_board(input: str) -> List[List[str]]:
@@ -24,7 +24,7 @@ def parse_fuel(input: str) -> dict:
     return fuel_dict
 
 # Returns list of rush hour game objects
-def init_boards(file_name: str) -> List[RushHour]:
+def init_boards(file_name: str) -> List[BoardState]:
     rush_hour_games = []
     with open(file_name, 'r') as filehandle:
         for line in filehandle:
@@ -33,5 +33,5 @@ def init_boards(file_name: str) -> List[RushHour]:
                 if line[0] != "#": # Check for comments and ignore
                     board = parse_board(line)
                     fuel_dict = parse_fuel(line)
-                    rush_hour_games.append(RushHour(board, fuel_dict))
+                    rush_hour_games.append(BoardState(board, fuel_dict))
     return rush_hour_games
