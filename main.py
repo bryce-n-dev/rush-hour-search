@@ -34,3 +34,7 @@ if __name__ == "__main__":
     print()
     game3.move_up("G", 2)
     game3.print_board()
+    print()
+    game3.move_down("M", 2)
+    game3.print_board()
+    print()

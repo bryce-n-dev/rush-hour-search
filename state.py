@@ -161,4 +161,28 @@ class BoardState():
                 pass
             elif not(spacesFree):
                 pass
+    
+    def move_down(self, vehicle:str, dist: int) -> bool: #TODO - return bool?
+        if not(self.is_horizontal(vehicle)):
+            vehicle_col = self.vehicle_col(vehicle)
+            tempArray = np.array(self.board)[:, vehicle_col].tolist()
+            top_most_index_pos = tempArray.index(vehicle) #represents the row that the top letter is in
+            bottom_most_index_pos = 6- tempArray[::-1].index(vehicle) -1 
 
+            spacesFree = False  #spaces to be moved to 
+            nextSpaces = []
+
+            for spaces in range(0, dist):
+                nextSpaces.append(tempArray[bottom_most_index_pos+1+spaces])
+            
+            #check if all the values in array is a .
+            if all(x == '.' for x in nextSpaces):
+                spacesFree = True
+
+            if(spacesFree):
+                for x in range(0, dist):
+                    self.board[top_most_index_pos+x][vehicle_col] = '.'
+                    self.board[bottom_most_index_pos+x+1][vehicle_col] = vehicle
+                pass
+            elif not(spacesFree):
+                pass
