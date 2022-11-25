@@ -31,6 +31,9 @@ class BoardState():
     # def exit_vehicle(self) -> None:
     #     pass
 
+    
+
+
     def has_fuel(self, vehicle: str) -> bool:
         return self.fuel[vehicle] > 0
 
@@ -54,17 +57,63 @@ class BoardState():
         print('Car fuel available: ', end=' ')
         for car in self.fuel:
             print(f'{car}: {self.fuel[car]}', end='  ')
+        print()
 
+    #check if vehicle is horizontal or not
     def is_horizontal(self, vehicle:str) -> bool:
         temp1 = ""
         temp2 = ""
-        
         for row in self.board:
-            for col in range(0, 4):
+            for col in range(0, 5):
                 temp1 = row[col]
                 temp2 = row[col+1]
                 if(temp1 == temp2 and temp1 == vehicle):
                     return True
         return False
+
+    #if vehicle is horizontal, returns which row the vehicle is in
+    def vehicle_row(self, vehicle:str) -> int:
+        if(self.is_horizontal(vehicle)):
+            row_value = 0
+            for row in self.board:
+                for col in row:
+                    if(vehicle == col):
+                        return row_value 
+                row_value += 1
+    
+    #if vehicle is verticle, returns which col the vehicle is in
+    def vehicle_col(self, vehicle:str)->int:
+        if not(self.is_horizontal(vehicle)):
+            col_value = 0
+            for i in range(0, 6):
+                column_list = np.array([row[i] for row in self.board])
+                if(vehicle in column_list):
+                    return col_value
+                col_value += 1
+
+    def move_right(self, vehicle:str, dist: int) -> bool:
+        if(self.is_horizontal(vehicle)):
+            vehicle_row = self.vehicle_row(vehicle)
+            right_most_index_pos = 6 - self.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
+            print(right_most_index_pos)
+
+            spacesFree = False  #spaces to be moved to 
+            nextSpaces = []
             
+            for spaces in range(0, dist):
+                nextSpaces.append(self.board[vehicle_row][right_most_index_pos+1+spaces])
+
+            #check if all the values in array is a .
+            if all(x == '.' for x in nextSpaces):
+                spacesFree = True
+
+            if(spacesFree): #performs moving vehicle to the right
+                left_most_index_pos = self.board[vehicle_row].index(vehicle)
+                for x in range(0, dist):
+                    self.board[vehicle_row][left_most_index_pos+x] = '.'
+                    self.board[vehicle_row][right_most_index_pos+x+1] = vehicle
                 
+            elif not (spacesFree):
+                #perform moving as much as possible?
+                pass
+
