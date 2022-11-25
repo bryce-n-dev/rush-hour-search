@@ -20,5 +20,10 @@ if __name__ == "__main__":
     #board 4
     game2 = initial_states[3]
     game2.print_board()
+    print()
     game2.move_right("B", 2)
     game2.print_board()
+    print()
+    game2.move_left("B", 2)
+    game2.print_board()
+    print()
