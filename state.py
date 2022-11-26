@@ -21,18 +21,8 @@ class BoardState():
         # Keep track in dictionary where key is vehicle and array of int are possible moves(?)
         pass
 
-    # def move_vertical(self, vehicle: str, dist: int) -> None:
-    #     pass
-
-    # def move_horizontal(self, vehicle: str, dist: int) -> None:
-    #     pass
-    #     # Let end vehicle exit if possible?
-
     # def exit_vehicle(self) -> None:
     #     pass
-
-    
-
 
     def has_fuel(self, vehicle: str) -> bool:
         return self.fuel[vehicle] > 0
@@ -109,9 +99,10 @@ class BoardState():
                 for x in range(0, dist):
                     self.board[vehicle_row][left_most_index_pos+x] = '.' 
                     self.board[vehicle_row][right_most_index_pos+x+1] = vehicle
-                
+                #return True
             elif not (spacesFree):
                 #perform moving as much as possible?
+                #return False
                 pass
     
     def move_left(self, vehicle:str, dist: int) -> bool: #TODO - return bool?
@@ -134,6 +125,7 @@ class BoardState():
                 for x in range(0, dist):
                     self.board[vehicle_row][right_most_index_pos-x] = '.' 
                     self.board[vehicle_row][left_most_index_pos-x-1] = vehicle
+                #return True
             elif not (spacesFree):
                 pass
     
@@ -158,8 +150,9 @@ class BoardState():
                 for x in range(0, dist):
                     self.board[top_most_index_pos-1-x][vehicle_col] = vehicle
                     self.board[bottom_most_index_pos-x][vehicle_col] = '.'
-                pass
+                #return True
             elif not(spacesFree):
+                #return False
                 pass
     
     def move_down(self, vehicle:str, dist: int) -> bool: #TODO - return bool?
@@ -183,6 +176,7 @@ class BoardState():
                 for x in range(0, dist):
                     self.board[top_most_index_pos+x][vehicle_col] = '.'
                     self.board[bottom_most_index_pos+x+1][vehicle_col] = vehicle
-                pass
+                #return True
             elif not(spacesFree):
+                #return False
                 pass
