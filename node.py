@@ -6,3 +6,4 @@ class Node():
         self.parent = parent
         self.state = state
         self.cost = cost
+    
