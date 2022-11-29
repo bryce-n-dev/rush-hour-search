@@ -3,7 +3,16 @@ import utils
 
 if __name__ == "__main__":
     initial_states = utils.init_boards("sample-input.txt") #list of state objects
-    
+    game = initial_states[0]
+    print("-----INITIAL BOARD STATE------")
+    game.print_board()
+
+    children = game.get_children()
+    print("------CHILDREN------")
+    for child in children:
+        child.print_board() 
+        print()   
+
     #board 2
     # game = initial_states[1] #a state object 
     # game.print_fuel()
@@ -32,12 +41,12 @@ if __name__ == "__main__":
     # print()
 
     #board 1
-    game3 = initial_states[0]
-    game3.print_board()
-    print()
-    game3.move_up("G", 2)
-    game3.print_board()
-    print()
-    game3.move_down("M", 2)
-    game3.print_board()
-    print()
+    # game3 = initial_states[0]
+    # game3.print_board()
+    # print()
+    # game3.move_up("G", 2)
+    # game3.print_board()
+    # print()
+    # game3.move_down("M", 2)
+    # game3.print_board()
+    # print()
