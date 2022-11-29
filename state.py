@@ -143,11 +143,17 @@ class BoardState():
             right_most_index_pos = 6 - board_copy.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
             left_most_index_pos = board_copy.board[vehicle_row].index(vehicle) 
 
+            tempArray = []
             for x in range(0, dist):
-                    board_copy.board[vehicle_row][right_most_index_pos-x] = '.' 
-                    board_copy.board[vehicle_row][left_most_index_pos-x-1] = vehicle
+                tempArray.append(left_most_index_pos-x-1)
 
-            return board_copy
+            if all(position>=0 for position in tempArray):
+                for x in range(0, dist):
+                        board_copy.board[vehicle_row][right_most_index_pos-x] = '.' 
+                        board_copy.board[vehicle_row][left_most_index_pos-x-1] = vehicle
+                return board_copy
+            else:
+                pass
 
     #-------------------MOVE UP--------------------------#
     def move_up_available(self,vehicle:str, dist: int) -> bool:
@@ -176,11 +182,18 @@ class BoardState():
             tempArray = np.array(board_copy.board)[:, vehicle_col].tolist()
             top_most_index_pos = tempArray.index(vehicle) #represents the row that the top letter is in
             bottom_most_index_pos = 6 - tempArray[::-1].index(vehicle) -1 
-            for x in range(0, dist):
-                    board_copy.board[top_most_index_pos-1-x][vehicle_col] = vehicle
-                    board_copy.board[bottom_most_index_pos-x][vehicle_col] = '.'
 
-            return board_copy
+            tempArray = []
+            for x in range(0, dist):
+                tempArray.append(top_most_index_pos-x-1)
+
+            if all(position>=0 for position in tempArray):
+                for x in range(0, dist):
+                        board_copy.board[top_most_index_pos-1-x][vehicle_col] = vehicle
+                        board_copy.board[bottom_most_index_pos-x][vehicle_col] = '.'
+                return board_copy
+            else:
+                pass
                 
           
 

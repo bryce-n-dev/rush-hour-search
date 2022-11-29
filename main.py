@@ -41,12 +41,15 @@ if __name__ == "__main__":
     # print()
 
     #board 1
-    # game3 = initial_states[0]
-    # game3.print_board()
-    # print()
-    # game3.move_up("G", 2)
-    # game3.print_board()
-    # print()
-    # game3.move_down("M", 2)
-    # game3.print_board()
-    # print()
+    game3 = initial_states[0]
+    game3.print_board()
+    print()
+    game3.move_up("L", 1)
+    game3.print_board()
+    print()
+    game3.move_down("M", 2)
+    game3.print_board()
+    print()
+    game3.move_left("B", 2) #won't allow B to move left cause its on the left most space
+    game3.print_board()
+    print()
