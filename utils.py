@@ -3,6 +3,8 @@ import re
 from typing import List
 
 from state import BoardState
+from node import Node
+
 
 # Parse board into 2D array
 def parse_board(input: str) -> List[List[str]]:
@@ -28,7 +30,7 @@ def get_cars(input: str) -> List[str]:
     return car_set
 
 # Returns list of rush hour game objects
-def init_boards(file_name: str) -> List[BoardState]:
+def init_boards(file_name: str) -> List[Node]:
     rush_hour_games = []
     with open(file_name, 'r') as filehandle:
         for line in filehandle:
@@ -37,5 +39,5 @@ def init_boards(file_name: str) -> List[BoardState]:
                 if line[0] != "#": # Check for comments and ignore
                     board = parse_board(line)
                     fuel_dict = parse_fuel(line)
-                    rush_hour_games.append(BoardState(board, fuel_dict))
+                    rush_hour_games.append(Node(parent=None, state=BoardState(board, fuel_dict), move=None, cost=0))
     return rush_hour_games
