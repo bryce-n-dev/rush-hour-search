@@ -1,5 +1,9 @@
+from __future__ import annotations
 from typing import List
 import numpy as np
+import copy
+
+import utils
 
 
 class BoardState():
@@ -7,25 +11,16 @@ class BoardState():
         self.board = board
         self.fuel = fuel
 
-    def get_children(self) -> dict:
-        # possible_moves = {}
-
-        # Scan board vertically, then horizontally - break every line 
-        # for i in range(6):
-        #     empty_counter = 0
-        #     for j in range(6):
-        #         if self.board[i][j] == '.':
-        #             empty_counter += 1
-                
-        # Keep track of any vehicle (AKA any letter that repeats more than once) --> Vehicle must have dots on either side to move
-        # Keep track in dictionary where key is vehicle and array of int are possible moves(?)
-        pass
-
-    # def exit_vehicle(self) -> None:
-    #     pass
+    def get_game_cars(self) -> List[str]:
+        flat_board = np.array(self.board).flatten()
+        board_string = ''.join(str(x) for x in flat_board) 
+        return utils.get_cars(board_string)
 
     def has_fuel(self, vehicle: str) -> bool:
         return self.fuel[vehicle] > 0
+    
+    def spend_fuel(self, vehicle: str) -> None:
+        self.fuel[vehicle] = self.fuel[vehicle] - 1
 
     def is_solved(self) -> bool:
         return (self.board[2][4] == 'A' and self.board[2][5] == 'A')
@@ -37,10 +32,13 @@ class BoardState():
                 print(col, end=' ')
             print() # New line
 
-    def print_board_1d(self) -> None:
+    def get_board_string(self) -> str:
         flat_board = np.array(self.board).flatten()
         board_string = ''.join(str(x) for x in flat_board) 
-        print(board_string)
+        return board_string
+
+    def print_board_1d(self) -> None:
+        print(self.get_board_string())
 
     #fuel of all cars
     def print_fuel(self) -> None:
@@ -83,41 +81,53 @@ class BoardState():
     
     #-------------------MOVE RIGHT--------------------------#
 
-    def move_right_available(self, vehicle:str, dist:int)->bool:
+    def move_right_available(self, vehicle:str, dist:int) -> bool:
         spacesFree = False  #spaces to be moved to are free or not
         if(self.is_horizontal(vehicle)):
+            if not self.has_fuel(vehicle):
+                return False
             vehicle_row = self.vehicle_row(vehicle)
             right_most_index_pos = 6 - self.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
             spacesFree = False  #spaces to be moved to are free or not
             nextSpaces = []
             for spaces in range(0, dist):
-                nextSpaces.append(self.board[vehicle_row][right_most_index_pos+1+spaces])
-
+                try:
+                    nextSpaces.append(self.board[vehicle_row][right_most_index_pos+1+spaces])
+                except:
+                    return False
             #check if all the values in array is a .
             if all(x == '.' for x in nextSpaces):
                 spacesFree = True
         return spacesFree
     
-    def move_right(self, vehicle:str, dist:int)->None:
+    def move_right(self, vehicle:str, dist:int) -> BoardState:
         if(self.move_right_available(vehicle, dist)):
-            vehicle_row = self.vehicle_row(vehicle)
-            right_most_index_pos = 6 - self.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
-            left_most_index_pos = self.board[vehicle_row].index(vehicle)
+            board_copy = copy.deepcopy(self)
+            board_copy.spend_fuel(vehicle)
+            vehicle_row = board_copy.vehicle_row(vehicle)
+            right_most_index_pos = 6 - board_copy.board[vehicle_row][::-1].index(vehicle) - 1 #gets right most index of vehicle
+            left_most_index_pos = board_copy.board[vehicle_row].index(vehicle)
             for x in range(0, dist):
-                self.board[vehicle_row][left_most_index_pos+x] = '.' 
-                self.board[vehicle_row][right_most_index_pos+x+1] = vehicle
+                board_copy.board[vehicle_row][left_most_index_pos+x] = '.' 
+                board_copy.board[vehicle_row][right_most_index_pos+x+1] = vehicle
+            return board_copy
 
     #-------------------MOVE LEFT--------------------------#
         
-    def move_left_available(self, vehicle:str, dist:int)->bool:
+    def move_left_available(self, vehicle:str, dist:int) -> bool:
         spacesFree = False  #spaces to be moved to 
         if(self.is_horizontal(vehicle)):
+            if not self.has_fuel(vehicle):
+                return False
             vehicle_row = self.vehicle_row(vehicle)
-            right_most_index_pos = 6 - self.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
+            right_most_index_pos = 6 - self.board[vehicle_row][::-1].index(vehicle) - 1 #gets right most index of vehicle
             left_most_index_pos = self.board[vehicle_row].index(vehicle) 
             nextSpaces = []
             for spaces in range(0, dist):
-                nextSpaces.append(self.board[vehicle_row][left_most_index_pos-1-spaces])
+                try:
+                    nextSpaces.append(self.board[vehicle_row][left_most_index_pos - 1 - spaces])
+                except:
+                    return False
             
             #check if all the values in array is a .
             if all(x == '.' for x in nextSpaces):
@@ -125,42 +135,68 @@ class BoardState():
         
         return spacesFree
 
-    def move_left(self, vehicle:str, dist:int)->None:
+    def move_left(self, vehicle:str, dist:int) -> BoardState:
         if(self.move_left_available(vehicle, dist)):
-            vehicle_row = self.vehicle_row(vehicle)
-            right_most_index_pos = 6 - self.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
-            left_most_index_pos = self.board[vehicle_row].index(vehicle) 
+            board_copy = copy.deepcopy(self)
+            board_copy.spend_fuel(vehicle)
+            vehicle_row = board_copy.vehicle_row(vehicle)
+            right_most_index_pos = 6 - board_copy.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
+            left_most_index_pos = board_copy.board[vehicle_row].index(vehicle) 
 
+            tempArray = []
             for x in range(0, dist):
-                    self.board[vehicle_row][right_most_index_pos-x] = '.' 
-                    self.board[vehicle_row][left_most_index_pos-x-1] = vehicle
+                tempArray.append(left_most_index_pos-x-1)
+
+            if all(position>=0 for position in tempArray):
+                for x in range(0, dist):
+                        board_copy.board[vehicle_row][right_most_index_pos-x] = '.' 
+                        board_copy.board[vehicle_row][left_most_index_pos-x-1] = vehicle
+                return board_copy
+            else:
+                pass
 
     #-------------------MOVE UP--------------------------#
     def move_up_available(self,vehicle:str, dist: int) -> bool:
         spacesFree = False  #spaces to be moved to 
         if not(self.is_horizontal(vehicle)):
+            if not self.has_fuel(vehicle):
+                return False
             vehicle_col = self.vehicle_col(vehicle)
             tempArray = np.array(self.board)[:, vehicle_col].tolist()
             top_most_index_pos = tempArray.index(vehicle) #represents the row that the top letter is in
             bottom_most_index_pos = 6- tempArray[::-1].index(vehicle) -1 
             nextSpaces = []
             for spaces in range(0, dist):
-                nextSpaces.append(tempArray[top_most_index_pos-1-spaces])
+                try:
+                    nextSpaces.append(tempArray[top_most_index_pos-1-spaces])
+                except:
+                    return False
             
             #check if all the values in array is a .
             if all(x == '.' for x in nextSpaces):
                 spacesFree = True
         return spacesFree
     
-    def move_up(self, vehicle:str, dist: int) -> None:
+    def move_up(self, vehicle:str, dist: int) -> BoardState:
         if(self.move_up_available(vehicle, dist)):
-            vehicle_col = self.vehicle_col(vehicle)
-            tempArray = np.array(self.board)[:, vehicle_col].tolist()
+            board_copy = copy.deepcopy(self)
+            board_copy.spend_fuel(vehicle)
+            vehicle_col = board_copy.vehicle_col(vehicle)
+            tempArray = np.array(board_copy.board)[:, vehicle_col].tolist()
             top_most_index_pos = tempArray.index(vehicle) #represents the row that the top letter is in
-            bottom_most_index_pos = 6- tempArray[::-1].index(vehicle) -1 
+            bottom_most_index_pos = 6 - tempArray[::-1].index(vehicle) -1 
+
+            tempArray = []
             for x in range(0, dist):
-                    self.board[top_most_index_pos-1-x][vehicle_col] = vehicle
-                    self.board[bottom_most_index_pos-x][vehicle_col] = '.'
+                tempArray.append(top_most_index_pos-x-1)
+
+            if all(position>=0 for position in tempArray):
+                for x in range(0, dist):
+                        board_copy.board[top_most_index_pos-1-x][vehicle_col] = vehicle
+                        board_copy.board[bottom_most_index_pos-x][vehicle_col] = '.'
+                return board_copy
+            else:
+                pass
                 
           
 
@@ -170,6 +206,8 @@ class BoardState():
     def move_down_available(self, vehicle:str, dist: int) -> bool:
         spacesFree = False  #spaces to be moved to 
         if not(self.is_horizontal(vehicle)):
+            if not self.has_fuel(vehicle):
+                return False
             vehicle_col = self.vehicle_col(vehicle)
             tempArray = np.array(self.board)[:, vehicle_col].tolist()
             top_most_index_pos = tempArray.index(vehicle) #represents the row that the top letter is in
@@ -177,126 +215,24 @@ class BoardState():
             nextSpaces = []
 
             for spaces in range(0, dist):
-                nextSpaces.append(tempArray[bottom_most_index_pos+1+spaces])
-            
+                try:
+                    nextSpaces.append(tempArray[bottom_most_index_pos+1+spaces])
+                except:
+                    return False
             #check if all the values in array is a .
             if all(x == '.' for x in nextSpaces):
                 spacesFree = True
         return spacesFree
 
-    def move_down(self, vehicle:str, dist: int) -> None: #TODO - return bool?
+    def move_down(self, vehicle:str, dist: int) -> BoardState:
         if(self.move_down_available(vehicle, dist)):
-            vehicle_col = self.vehicle_col(vehicle)
-            tempArray = np.array(self.board)[:, vehicle_col].tolist()
+            board_copy = copy.deepcopy(self)
+            board_copy.spend_fuel(vehicle)
+            vehicle_col = board_copy.vehicle_col(vehicle)
+            tempArray = np.array(board_copy.board)[:, vehicle_col].tolist()
             top_most_index_pos = tempArray.index(vehicle) #represents the row that the top letter is in
             bottom_most_index_pos = 6- tempArray[::-1].index(vehicle) -1 
             for x in range(0, dist):
-                    self.board[top_most_index_pos+x][vehicle_col] = '.'
-                    self.board[bottom_most_index_pos+x+1][vehicle_col] = vehicle
-
-        
-
-    
-    # def move_right2(self, vehicle:str, dist: int) -> bool: #TODO- should it return true after vehicle has been moved? 
-    #     if(self.is_horizontal(vehicle)):
-    #         vehicle_row = self.vehicle_row(vehicle)
-    #         right_most_index_pos = 6 - self.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
-    #         spacesFree = False  #spaces to be moved to 
-    #         nextSpaces = []
-    #         for spaces in range(0, dist):
-    #             nextSpaces.append(self.board[vehicle_row][right_most_index_pos+1+spaces])
-
-    #         #check if all the values in array is a .
-    #         if all(x == '.' for x in nextSpaces):
-    #             spacesFree = True
-
-    #         if(spacesFree): #performs moving vehicle to the right
-    #             left_most_index_pos = self.board[vehicle_row].index(vehicle)
-    #             for x in range(0, dist):
-    #                 self.board[vehicle_row][left_most_index_pos+x] = '.' 
-    #                 self.board[vehicle_row][right_most_index_pos+x+1] = vehicle
-    #             #return True
-    #         elif not (spacesFree):
-    #             #perform moving as much as possible?
-    #             #return False
-    #             pass
-
-    #def move_left2(self, vehicle:str, dist: int) -> bool: #TODO - return bool?
-    #     if(self.is_horizontal(vehicle)):
-    #         vehicle_row = self.vehicle_row(vehicle)
-    #         right_most_index_pos = 6 - self.board[vehicle_row][::-1].index(vehicle) -1 #gets right most index of vehicle
-    #         left_most_index_pos = self.board[vehicle_row].index(vehicle) 
-
-    #         spacesFree = False  #spaces to be moved to 
-    #         nextSpaces = []
-
-    #         for spaces in range(0, dist):
-    #             nextSpaces.append(self.board[vehicle_row][left_most_index_pos-1-spaces])
-            
-    #         #check if all the values in array is a .
-    #         if all(x == '.' for x in nextSpaces):
-    #             spacesFree = True
-            
-    #         if(spacesFree):
-    #             for x in range(0, dist):
-    #                 self.board[vehicle_row][right_most_index_pos-x] = '.' 
-    #                 self.board[vehicle_row][left_most_index_pos-x-1] = vehicle
-    #             #return True
-    #         elif not (spacesFree):
-    #             pass
-
-
-    # def move_up2(self, vehicle:str, dist: int) -> bool: #TODO - return bool?
-    #     if not(self.is_horizontal(vehicle)):
-    #         vehicle_col = self.vehicle_col(vehicle)
-    #         tempArray = np.array(self.board)[:, vehicle_col].tolist()
-    #         top_most_index_pos = tempArray.index(vehicle) #represents the row that the top letter is in
-    #         bottom_most_index_pos = 6- tempArray[::-1].index(vehicle) -1 
-            
-    #         spacesFree = False  #spaces to be moved to 
-    #         nextSpaces = []
-
-    #         for spaces in range(0, dist):
-    #             nextSpaces.append(tempArray[top_most_index_pos-1-spaces])
-            
-    #         #check if all the values in array is a .
-    #         if all(x == '.' for x in nextSpaces):
-    #             spacesFree = True
-
-    #         if(spacesFree):
-    #             for x in range(0, dist):
-    #                 self.board[top_most_index_pos-1-x][vehicle_col] = vehicle
-    #                 self.board[bottom_most_index_pos-x][vehicle_col] = '.'
-    #             #return True
-    #         elif not(spacesFree):
-    #             #return False
-    #             pass
-   
-   
-
-    # def move_down2(self, vehicle:str, dist: int) -> bool: #TODO - return bool?
-    #     if not(self.is_horizontal(vehicle)):
-    #         vehicle_col = self.vehicle_col(vehicle)
-    #         tempArray = np.array(self.board)[:, vehicle_col].tolist()
-    #         top_most_index_pos = tempArray.index(vehicle) #represents the row that the top letter is in
-    #         bottom_most_index_pos = 6- tempArray[::-1].index(vehicle) -1 
-
-    #         spacesFree = False  #spaces to be moved to 
-    #         nextSpaces = []
-
-    #         for spaces in range(0, dist):
-    #             nextSpaces.append(tempArray[bottom_most_index_pos+1+spaces])
-            
-    #         #check if all the values in array is a .
-    #         if all(x == '.' for x in nextSpaces):
-    #             spacesFree = True
-
-    #         if(spacesFree):
-    #             for x in range(0, dist):
-    #                 self.board[top_most_index_pos+x][vehicle_col] = '.'
-    #                 self.board[bottom_most_index_pos+x+1][vehicle_col] = vehicle
-    #             #return True
-    #         elif not(spacesFree):
-    #             #return False
-    #             pass
-    
+                    board_copy.board[top_most_index_pos+x][vehicle_col] = '.'
+                    board_copy.board[bottom_most_index_pos+x+1][vehicle_col] = vehicle
+            return board_copy

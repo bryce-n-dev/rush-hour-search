@@ -3,6 +3,8 @@ import re
 from typing import List
 
 from state import BoardState
+from node import Node
+
 
 # Parse board into 2D array
 def parse_board(input: str) -> List[List[str]]:
@@ -13,8 +15,7 @@ def parse_board(input: str) -> List[List[str]]:
 def parse_fuel(input: str) -> dict:
     # Each letter becomes dictionary key
     fuel_dict = {}
-    cars_string = re.sub(r'[^A-Z]', '', input) # Remove non letters
-    car_set = set(list(cars_string)) # Remove duplicates
+    car_set = get_cars(input)
     for car in car_set:
         fuel_dict[car] = 100 # Cars have 100 fuel by default
     
@@ -23,8 +24,13 @@ def parse_fuel(input: str) -> dict:
         fuel_dict[car[0]] = int(car[1:]) # Overwrite default with specified value
     return fuel_dict
 
+def get_cars(input: str) -> List[str]:
+    cars_string = re.sub(r'[^A-Z]', '', input) # Remove non letters
+    car_set = set(list(cars_string)) # Remove duplicates
+    return car_set
+
 # Returns list of rush hour game objects
-def init_boards(file_name: str) -> List[BoardState]:
+def init_boards(file_name: str) -> List[Node]:
     rush_hour_games = []
     with open(file_name, 'r') as filehandle:
         for line in filehandle:
@@ -33,5 +39,5 @@ def init_boards(file_name: str) -> List[BoardState]:
                 if line[0] != "#": # Check for comments and ignore
                     board = parse_board(line)
                     fuel_dict = parse_fuel(line)
-                    rush_hour_games.append(BoardState(board, fuel_dict))
+                    rush_hour_games.append(Node(parent=None, state=BoardState(board, fuel_dict), move=None, cost=0))
     return rush_hour_games
