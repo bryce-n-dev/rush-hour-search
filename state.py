@@ -43,9 +43,19 @@ class BoardState():
     #fuel of all cars
     def print_fuel(self) -> None:
         print('Car fuel available: ', end=' ')
-        for car in self.fuel:
-            print(f'{car}: {self.fuel[car]}', end='  ')
+        print(self.get_fuel_string())
         print()
+
+    def print_status(self) -> None:
+        fuel_string = self.get_fuel_string()
+        board_string = self.get_board_string()
+        print(f'{board_string} {fuel_string}')
+
+    def get_fuel_string(self) -> str:
+        fuel_string = ''
+        for car in self.fuel:
+            fuel_string += f'{car}: {self.fuel[car]} '
+        return fuel_string
 
     #check if vehicle is horizontal or not
     def is_horizontal(self, vehicle:str) -> bool:

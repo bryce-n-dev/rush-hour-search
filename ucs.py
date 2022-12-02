@@ -1,26 +1,28 @@
-import numpy as np
-import re
-from typing import List
-from state import BoardState
+from queue import PriorityQueue
+
 from node import Node
 
-class UniformCostSearch():
-    def __init__(self, board:BoardState)->None:
-        self.board = board
-        self.open_list = [] #priority queue
-        self.closed_list = [] #visited list
-        self.current_node = self.define_current_node(board, None, 1)
-        
 
-    def define_current_node(self, board:BoardState, parent:Node, cost:int)->Node:
-        current_node = Node(board, parent, cost)
-        return current_node
+def uniform_cost_search(root_node: Node) -> Node:
+    open_list: PriorityQueue[Node] = PriorityQueue()
+    closed_list = set()
+    open_board_states = set()
+    open_list.put(root_node)
+    open_board_states.add(root_node.state.get_board_string())
 
+    while not open_list.empty():
+        node = open_list.get()
+        open_board_states.remove(node.state.get_board_string())
 
-    def start_search(self)->None:
-        while not self.current_node.get_board_state().is_solved():
-            self.closed_list.append(self.current_node)
-            pass 
-
-    def generate_child(self)->Node:
-        pass
+        node.state.print_status()
+        closed_list.add(node.state.get_board_string())
+        if node.state.is_solved():
+            return node
+        else:
+            children = node.get_children()
+            children.sort(key=lambda x: x.cost, reverse=True)
+            for child in children:
+                board_state = child.state.get_board_string()
+                if board_state not in closed_list and board_state not in open_board_states:
+                    open_list.put(child)
+                    open_board_states.add(board_state)
