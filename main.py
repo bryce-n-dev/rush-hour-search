@@ -4,9 +4,11 @@ from ucs import uniform_cost_search
 from a_star import a_star_h1
 from a_star import a_star_h2
 from a_star import a_star_h3
+from a_star import a_star_h4
 from gbfs import gbfs_h1
 from gbfs import gbfs_h2
 from gbfs import gbfs_h3
+from gbfs import gbfs_h4
 
 if __name__ == "__main__":
     # We should have everything we need to start writing the algorithms.
@@ -15,8 +17,16 @@ if __name__ == "__main__":
     # Get the root node of our first game
     for root_node in root_nodes:
         # final_node = uniform_cost_search(root_node)
+
         # final_node = a_star_h1(root_node)
-        final_node = gbfs_h1(root_node)
+        # final_node = a_star_h2(root_node)
+        # final_node = a_star_h3(root_node)
+        # final_node = a_star_h4(root_node)
+
+        # final_node = gbfs_h1(root_node)
+        # final_node = gbfs_h2(root_node)
+        # final_node = gbfs_h3(root_node)
+        final_node = gbfs_h4(root_node)
 
 
         def print_node(node: Node):
@@ -26,7 +36,7 @@ if __name__ == "__main__":
                     print(node.move)
 
         print_node(final_node)
-        # print(final_node.cost)
+        print(final_node.cost)
 
 
 
