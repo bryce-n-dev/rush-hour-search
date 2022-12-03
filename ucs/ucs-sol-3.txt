@@ -1,0 +1,41 @@
+Initial board: 
+JBBCCC
+JDD..M
+JAAL.M
+FFKL.N
+..KGGN
+.HH...
+
+
+Initial fuel: J: 100 N: 100 L: 100 H: 100 K: 100 G: 100 M: 100 D: 100 F: 100 C: 100 A: 100 B: 100 
+Runtime: 136.381 seconds
+Search path length:5383
+Solution path: H right 2; K down 1; L up 1; N down 1; F right 4; J down 3; D left 1; A left 1; B left 1; K up 4; G left 2; L down 2; A right 3; K down 1; C left 1; M up 1; A right 1; 
+
+H right 2    99 JBBCCCJDD..MJAAL.MFFKL.N..KGGN...HH.
+K down 1    99 JBBCCCJDD..MJAAL.MFF.L.N..KGGN..KHH.
+L up 1    99 JBBCCCJDDL.MJAAL.MFF...N..KGGN..KHH.
+N down 1    99 JBBCCCJDDL.MJAAL.MFF......KGGN..KHHN
+F right 4    99 JBBCCCJDDL.MJAAL.M....FF..KGGN..KHHN
+J down 3    99 .BBCCC.DDL.M.AAL.MJ...FFJ.KGGNJ.KHHN
+D left 1    99 .BBCCCDD.L.M.AAL.MJ...FFJ.KGGNJ.KHHN
+A left 1    99 .BBCCCDD.L.MAA.L.MJ...FFJ.KGGNJ.KHHN
+B left 1    99 BB.CCCDD.L.MAA.L.MJ...FFJ.KGGNJ.KHHN
+K up 4    98 BBKCCCDDKL.MAA.L.MJ...FFJ..GGNJ..HHN
+G left 2    99 BBKCCCDDKL.MAA.L.MJ...FFJGG..NJ..HHN
+L down 2    98 BBKCCCDDK..MAA...MJ..LFFJGGL.NJ..HHN
+A right 3    98 BBKCCCDDK..M...AAMJ..LFFJGGL.NJ..HHN
+K down 1    97 BB.CCCDDK..M..KAAMJ..LFFJGGL.NJ..HHN
+C left 1    99 BBCCC.DDK..M..KAAMJ..LFFJGGL.NJ..HHN
+M up 1    99 BBCCCMDDK..M..KAA.J..LFFJGGL.NJ..HHN
+A right 1    97 BBCCCMDDK..M..K.AAJ..LFFJGGL.NJ..HHN
+
+
+Final fuel: J: 99 N: 99 L: 98 H: 99 K: 97 G: 99 M: 99 D: 99 F: 99 C: 99 A: 97 B: 99 
+Final board: 
+BBCCCM
+DDK..M
+..K.AA
+J..LFF
+JGGL.N
+J..HHN

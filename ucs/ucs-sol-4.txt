@@ -1,0 +1,12 @@
+BBB..M
+CCDD.M
+AAKL.M
+J.KLEE
+J.GG..
+JHHHII
+Initial board: 
+
+Initial fuel: I: 100 J: 0 L: 100 H: 100 K: 100 G: 100 M: 100 D: 100 C: 100 A: 100 B: 4 E: 100 
+Runtime: 2.735 seconds
+Sorry, could not solve the puzzle as specified.
+Error: no solution found

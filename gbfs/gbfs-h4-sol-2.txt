@@ -1,0 +1,33 @@
+Initial board: 
+..I...
+BBI.K.
+GHAAKL
+GHDDKL
+G..JEE
+FF.J..
+
+Initial fuel: E: 100 G: 100 K: 100 F: 100 J: 100 D: 100 A: 100 I: 100 L: 100 B: 100 H: 100 
+Runtime: 159.336 seconds
+Search path length:1464
+Solution path: K up 1; L up 2; D right 2; H down 1; A left 1; J up 4; D left 2; E left 2; K down 3; A right 3; 
+
+K up 1    99 ..I.K.BBI.K.GHAAKLGHDD.LG..JEEFF.J..
+L up 2    99 ..I.KLBBI.KLGHAAK.GHDD..G..JEEFF.J..
+D right 2    99 ..I.KLBBI.KLGHAAK.GH..DDG..JEEFF.J..
+H down 1    99 ..I.KLBBI.KLG.AAK.GH..DDGH.JEEFF.J..
+A left 1    99 ..I.KLBBI.KLGAA.K.GH..DDGH.JEEFF.J..
+J up 4    99 ..IJKLBBIJKLGAA.K.GH..DDGH..EEFF....
+D left 2    98 ..IJKLBBIJKLGAA.K.GHDD..GH..EEFF....
+E left 2    99 ..IJKLBBIJKLGAA.K.GHDD..GHEE..FF....
+K down 3    98 ..IJ.LBBIJ.LGAA...GHDDK.GHEEK.FF..K.
+A right 3    98 ..IJ.LBBIJ.LG...AAGHDDK.GHEEK.FF..K.
+
+
+Final fuel: E: 99 G: 100 K: 98 F: 100 J: 99 D: 98 A: 98 I: 100 L: 99 B: 100 H: 99 
+Final board: 
+..IJ.L
+BBIJ.L
+G...AA
+GHDDK.
+GHEEK.
+FF..K.

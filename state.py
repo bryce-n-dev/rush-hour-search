@@ -52,6 +52,9 @@ class BoardState():
 
     def has_fuel(self, vehicle: str) -> bool:
         return self.fuel[vehicle] > 0
+    
+    def get_fuel(self, vehicle:str)->int:
+        return self.fuel[vehicle]
 
     def spend_fuel(self, vehicle: str) -> None:
         self.fuel[vehicle] = self.fuel[vehicle] - 1
@@ -73,6 +76,14 @@ class BoardState():
 
     def print_board_1d(self) -> None:
         print(self.get_board_string())
+
+    def write_board_to_file(self, file_name:str)->None:
+        f=open(file_name, "a")
+        for row in self.board:
+            for col in row:
+                f.write(col)
+            f.write('\n')    
+        f.close()
 
     # fuel of all cars
     def print_fuel(self) -> None:

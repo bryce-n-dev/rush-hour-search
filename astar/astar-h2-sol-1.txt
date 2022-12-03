@@ -1,0 +1,26 @@
+Initial board: 
+BBIJ..
+..IJCC
+..IAAM
+GDDK.M
+GH.KL.
+GHFFL.
+
+
+Initial fuel: B: 100 J: 100 D: 100 F: 100 I: 100 A: 100 L: 100 C: 100 G: 100 K: 100 H: 100 M: 100 
+Runtime: 0.065 seconds
+Search path length:10
+Solution path: M down 1; A right 1; 
+
+M down 1    99 BBIJ....IJCC..IAA.GDDK.MGH.KLMGHFFL.
+A right 1    99 BBIJ....IJCC..I.AAGDDK.MGH.KLMGHFFL.
+
+
+Final fuel: B: 100 J: 100 D: 100 F: 100 I: 100 A: 99 L: 100 C: 100 G: 100 K: 100 H: 100 M: 99 
+Final board: 
+BBIJ..
+..IJCC
+..I.AA
+GDDK.M
+GH.KLM
+GHFFL.
