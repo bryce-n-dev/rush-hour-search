@@ -20,7 +20,7 @@ if __name__ == "__main__":
     board = 1
     # Get the root node of our first game
     for root_node in root_nodes:
-        file_name="gbfs-h4-sol-" + str(board) + ".txt"
+        file_name="astar-h2-sol-" + str(board) + ".txt"
         f = open(file_name, "a")
 
         #writing initial board info to file
@@ -37,14 +37,14 @@ if __name__ == "__main__":
         #final_node = uniform_cost_search(root_node, length, board)
 
         #final_node = a_star_h1(root_node, length, board)
-        #final_node = a_star_h2(root_node, length, board)
+        final_node = a_star_h2(root_node, length, board)
         #final_node = a_star_h3(root_node, length, board)
         #final_node = a_star_h4(root_node, length, board)
 
         #final_node = gbfs_h1(root_node, length, board)
         #final_node = gbfs_h2(root_node, length, board)
         #final_node = gbfs_h3(root_node, length, board)
-        final_node = gbfs_h4(root_node, length, board)
+        #final_node = gbfs_h4(root_node, length, board)
 
         end = time.time()
         
@@ -81,7 +81,9 @@ if __name__ == "__main__":
                 f.write('\n')
 
             f.write('\n'+'\n')
-            f.write("Final fuel: " + final_node.state.get_fuel_string() + '\n')            
+            f.write("Final fuel: " + final_node.state.get_fuel_string() + '\n')   
+            cost = final_node.cost
+            f.write("Cost: " + str(cost) + '\n')         
             f.write("Final board: " + '\n')
             final_node.state.write_board_to_file(file_name)
         else:
